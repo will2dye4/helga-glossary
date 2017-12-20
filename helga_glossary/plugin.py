@@ -40,8 +40,6 @@ def add_term(cmd, subcmd, nick, args):
     else:
         term = args[0]
         definition = ' '.join(args[1:])
-        if not definition:
-            return usage
     existing_term_record = TermRecord.get_term(term)
     if existing_term_record:
         return 'Sorry, {}, the term "{}" is already in the glossary'.format(nick, term)
@@ -72,7 +70,7 @@ def find_term(cmd, subcmd, nick, args):
         term = ' '.join(args)
     term_record = TermRecord.get_term(term)
     if not term_record:
-        return TERM_DOES_NOT_EXIST_TEMPLATE.format(term, nick)
+        return TERM_DOES_NOT_EXIST_TEMPLATE.format(term=term, nick=nick)
     return format_term(term_record)
 
 
