@@ -13,7 +13,7 @@ DELETE_COMMANDS = ['delete', 'remove']
 FIND_COMMANDS = ['find', 'lookup']
 RANDOM_COMMANDS = ['random']
 ALL_COMMANDS = ADD_COMMANDS + DELETE_COMMANDS + FIND_COMMANDS + RANDOM_COMMANDS
-DATE_FORMAT = '%d/%m/%Y %I:%M%p'
+DATE_FORMAT = '%Y-%m-%d %I:%M%p'
 TERM_DOES_NOT_EXIST_TEMPLATE = 'The term "{term}" is not in the glossary, {nick}'
 TERM_FORMAT_TEMPLATE = '*{term}*. {definition} (added by {nick} {created})'
 
@@ -31,9 +31,8 @@ def format_term(term_record):
 
 
 def add_term(cmd, subcmd, nick, args):
-    usage = 'Usage: helga {} {} "<term>" "<definition>"'.format(cmd, subcmd)
     if len(args) < 2:
-        return usage
+        return 'Usage: helga {} {} "<term>" "<definition>"'.format(cmd, subcmd)
     if len(args) == 2:
         term, definition = args
     else:
@@ -80,7 +79,9 @@ def random_term(nick):
     return format_term(random_term_record)
 
 
-@command('glossary', aliases=['g'], help='Define and look up terms', shlex=True)
+@command('glossary', aliases=['g'], shlex=True,
+         help='Define and look up terms. Usage: helga glossary [(add|define) <term> <definition>|'
+              '(find|lookup) <term>|(delete|remove) <term>|random]')
 def glossary(client, channel, nick, message, cmd, args):
     if args:
         if args[0].lower() in ALL_COMMANDS:
