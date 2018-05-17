@@ -84,6 +84,6 @@ class TermRecord(object):
         return six.text_type(self.record)
 
     def __repr__(self):
-        return "<Lunch Record '{record}'>".format(
+        return "<Term Record '{record}'>".format(
             record=six.text_type(self)
         )

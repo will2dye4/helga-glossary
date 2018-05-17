@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 
-import itertools
 import random
 
 from helga import log
@@ -13,7 +12,7 @@ ADD_COMMANDS = ['add', 'define']
 DELETE_COMMANDS = ['delete', 'remove']
 FIND_COMMANDS = ['find', 'lookup']
 RANDOM_COMMANDS = ['random']
-ALL_COMMANDS = itertools.chain(ADD_COMMANDS, DELETE_COMMANDS, FIND_COMMANDS, RANDOM_COMMANDS)
+ALL_COMMANDS = ADD_COMMANDS + DELETE_COMMANDS + FIND_COMMANDS + RANDOM_COMMANDS
 DATE_FORMAT = '%d/%m/%Y %I:%M%p'
 TERM_DOES_NOT_EXIST_TEMPLATE = 'The term "{term}" is not in the glossary, {nick}'
 TERM_FORMAT_TEMPLATE = '*{term}*. {definition} (added by {nick} {created})'
