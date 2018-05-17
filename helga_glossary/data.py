@@ -27,7 +27,6 @@ class TermRecord(object):
     def get_new_record(cls, term, definition, created_by):
         return cls({
             'term': term,
-            'term_re': term,
             'definition': definition,
             'created_by': created_by,
             'created_datetime': datetime.datetime.utcnow(),
@@ -44,7 +43,7 @@ class TermRecord(object):
 
     @classmethod
     def get_term(cls, term):
-        record = db.glossary_term.find_one({'term_re': cls.term_regex(term)})
+        record = db.glossary_term.find_one({'term': cls.term_regex(term)})
         if record:
             return cls(record)
         return None
@@ -58,13 +57,13 @@ class TermRecord(object):
 
     def save(self):
         db.glossary_term.update(
-            {'term_re': self.term_regex(self['term'])},
+            {'term': self.term_regex(self['term'])},
             self.record,
             upsert=True
         )
 
     def delete(self):
-        db.glossary_term.remove({'term_re': self.term_regex(self['term'])})
+        db.glossary_term.remove({'term': self.term_regex(self['term'])})
 
     def get(self, key, default=None):
         try:
