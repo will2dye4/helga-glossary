@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import datetime
 import random
+import re
 import sys
 
 import six
@@ -18,10 +19,15 @@ class TermRecord(object):
     def __init__(self, record):
         self.record = record
 
+    @staticmethod
+    def term_regex(term):
+        return re.compile(r'^{0}$'.format(re.escape(term)), re.IGNORECASE)
+
     @classmethod
     def get_new_record(cls, term, definition, created_by):
         return cls({
             'term': term,
+            'term_regex': cls.term_regex(term),
             'definition': definition,
             'created_by': created_by,
             'created_datetime': datetime.datetime.utcnow(),
@@ -38,7 +44,7 @@ class TermRecord(object):
 
     @classmethod
     def get_term(cls, term):
-        record = db.glossary_term.find_one({'term': term})
+        record = db.glossary_term.find_one({'term_regex': cls.term_regex(term)})
         if record:
             return cls(record)
         return None
@@ -52,13 +58,13 @@ class TermRecord(object):
 
     def save(self):
         db.glossary_term.update(
-            {'term': self['term']},
+            {'term_regex': self['term_regex']},
             self.record,
             upsert=True
         )
 
     def delete(self):
-        db.glossary_term.remove({'term': self['term']})
+        db.glossary_term.remove({'term_regex': self['term_regex']})
 
     def get(self, key, default=None):
         try:
