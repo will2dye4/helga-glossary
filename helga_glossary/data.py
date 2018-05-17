@@ -45,10 +45,10 @@ class TermRecord(object):
 
     @classmethod
     def create_if_not_exists(cls, term, definition, created_by):
-        term = cls.get_term(term)
-        if not term:
-            term = cls.get_new_record(term, definition, created_by)
-            term.save()
+        record = cls.get_term(term)
+        if not record:
+            record = cls.get_new_record(term, definition, created_by)
+            record.save()
 
     def save(self):
         db.glossary_term.update(
